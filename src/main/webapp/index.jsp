@@ -21,5 +21,8 @@
 <br>
 <hr>
 <a href="products">Bai 6 + 7 + 8 + 9</a>
+<br>
+<hr>
+<a href="show_list_resume">Bai 10</a>
 </body>
 </html>

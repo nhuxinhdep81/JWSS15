@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật CV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #4facfe);
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .form-title {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+
+        .form-subtitle {
+            color: #718096;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .floating-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #a0aec0;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: white;
+            padding: 0 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2d3748;
+            background: #f7fafc;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .form-control:focus + .floating-label,
+        .form-control:not(:placeholder-shown) + .floating-label {
+            top: -8px;
+            left: 16px;
+            font-size: 12px;
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        .textarea-control {
+            min-height: 140px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+            padding-left: 5px;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-update {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+            flex: 1;
+        }
+
+        .btn-update:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.6);
+        }
+
+        .btn-cancel {
+            background: linear-gradient(45deg, #cbd5e0, #a0aec0);
+            color: #4a5568;
+            min-width: 150px;
+        }
+
+        .btn-cancel:hover {
+            background: linear-gradient(45deg, #a0aec0, #718096);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Icon styling */
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #a0aec0;
+            transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within .input-icon {
+            color: #4facfe;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+
+            .form-title {
+                font-size: 2.2rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .action-bar {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px 30px;
+            }
+
+            .back-link {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Animation for form elements */
+        .input-group {
+            animation: slideInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.1s; }
+        .input-group:nth-child(2) { animation-delay: 0.2s; }
+        .input-group:nth-child(3) { animation-delay: 0.3s; }
+        .input-group:nth-child(4) { animation-delay: 0.4s; }
+        .input-group:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="show_list_resume" class="back-link">← Quay lại danh sách</a>
+
+<div class="page-container">
+    <div class="form-card">
+        <div class="header-section">
+            <h1 class="form-title">✏️ Cập Nhật CV</h1>
+            <p class="form-subtitle">Chỉnh sửa thông tin hồ sơ ứng viên</p>
+        </div>
+
+        <form th:action="@{resume_update}" th:object="${resumeDTO}" method="post">
+
+            <div class="form-grid">
+                <input type="hidden" th:field="*{id}">
+                <div class="input-group">
+                    <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            th:field="*{fullName}"
+                            class="form-control"
+                            placeholder=" "
+                    >
+                    <label class="floating-label" for="fullName">Họ và Tên *</label>
+                    <span class="input-icon">👤</span>
+                    <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error-message"></div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                th:field="*{email}"
+                                class="form-control"
+                                placeholder=" "
+                        >
+                        <label class="floating-label" for="email">Email *</label>
+                        <span class="input-icon">📧</span>
+                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <input
+                                type="tel"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                th:field="*{phoneNumber}"
+                                class="form-control"
+                                placeholder=" "
+                        >
+                        <label class="floating-label" for="phoneNumber">Số điện thoại *</label>
+                        <span class="input-icon">📱</span>
+                        <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error-message"></div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                        <textarea
+                                id="education"
+                                name="education"
+                                th:field="*{education}"
+                                class="form-control textarea-control"
+                                placeholder=" "
+                        ></textarea>
+                    <label class="floating-label" for="education">Học vấn *</label>
+                    <div th:if="${#fields.hasErrors('education')}" th:errors="*{education}" class="error-message"></div>
+                </div>
+
+                <div class="input-group">
+                        <textarea
+                                id="experience"
+                                name="experience"
+                                th:field="*{experience}"
+                                class="form-control textarea-control"
+                                placeholder=" "
+                        ></textarea>
+                    <label class="floating-label" for="experience">Kinh nghiệm làm việc</label>
+                    <div th:if="${#fields.hasErrors('experience')}" th:errors="*{experience}" class="error-message"></div>
+                </div>
+
+                <div class="input-group">
+                        <textarea
+                                id="skills"
+                                name="skills"
+                                th:field="*{skills}"
+                                class="form-control textarea-control"
+                                placeholder=" "
+                        ></textarea>
+                    <label class="floating-label" for="skills">Kỹ năng</label>
+                    <div th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button type="button" class="btn btn-cancel" onclick="history.back()">
+                    Hủy bỏ
+                </button>
+                <button  type="submit" class="btn btn-update">
+                    🔄 Cập nhật CV
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Enhanced floating label animation
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.01)';
+            this.parentElement.style.zIndex = '10';
+        });
+
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+            this.parentElement.style.zIndex = '1';
+        });
+    });
+
+    // Button animation effects
+    document.querySelector('.btn-update').addEventListener('click', function(e) {
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 150);
+    });
+
+    // Add CSS animation for error notification
+    const style = document.createElement('style');
+    style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

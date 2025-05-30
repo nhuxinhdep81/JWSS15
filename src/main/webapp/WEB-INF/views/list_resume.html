@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .add-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      border: none;
+    }
+
+    th {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 18px 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+    }
+
+    td {
+      padding: 16px 15px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+      color: #555;
+      transition: all 0.3s ease;
+      border-left: none;
+      border-right: none;
+    }
+
+    tr:hover td {
+      background-color: #f8f9ff;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-edit {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-edit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-delete {
+      background: linear-gradient(45deg, #f44336, #da190b);
+      color: white;
+      box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+    }
+
+    .btn-delete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .table-container {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 12px 8px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>📋 Danh sách CV</h2>
+    <a href="form_add_resume" class="add-btn">
+      <span>➕</span>
+      Thêm CV
+    </a>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>FullName</th>
+        <th>Email</th>
+        <th>PhoneNumber</th>
+        <th>Education</th>
+        <th>Experience</th>
+        <th>Skills</th>
+        <th>Hành động</th>
+      </tr>
+
+      <tr th:each="res : ${resumeDTOList}">
+        <td th:text="${res.id}"></td>
+        <td th:text="${res.fullName}"></td>
+        <td th:text="${res.email}"></td>
+        <td th:text="${res.phoneNumber}"></td>
+        <td th:text="${res.education}"></td>
+        <td th:text="${res.experience}"></td>
+        <td th:text="${res.skills}"></td>
+        <td>
+          <div class="action-buttons">
+            <a th:href="@{'/form_update_resume/'+ ${res.id}}" class="btn btn-edit">✏️ Sửa</a>
+            <a th:href="@{'/delete_resume/' + ${res.id}}" class="btn btn-delete">🗑️ Xóa</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Thêm hiệu ứng khi hover vào các nút
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-2px) scale(1.05)';
+    });
+
+    btn.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+
+  // Hiệu ứng cho nút thêm CV
+  document.querySelector('.add-btn').addEventListener('click', function() {
+    this.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      this.style.transform = 'scale(1)';
+    }, 150);
+  });
+</script>
+</body>
+</html>

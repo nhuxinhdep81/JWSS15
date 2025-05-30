@@ -14,8 +14,11 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.tien.controller", "com.tien.service", "com.tien.repository"
-,"com.tien.config"})
+@ComponentScan(basePackages = {"com.tien.controller",
+        "com.tien.service",
+        "com.tien.repository"
+,"com.tien.config",
+"com.tien.validation"})
 public class AppConfig{
     @Bean
     public SpringResourceTemplateResolver templateResolver(){

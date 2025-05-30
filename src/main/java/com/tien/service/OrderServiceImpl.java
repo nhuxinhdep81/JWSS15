@@ -17,6 +17,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int createOrder(Order order, List<OrderDetail> orderDetails) {
+        System.out.println(">>> Creating order: userId=" + order.getUserId());
+        System.out.println(">>> Recipient=" + order.getRecipientName());
+        System.out.println(">>> Address=" + order.getAddress());
+        System.out.println(">>> Phone=" + order.getPhoneNumber());
+
         int orderId = orderRepository.insertOrder(order);
         if (orderId > 0) {
             for (OrderDetail detail : orderDetails) {
