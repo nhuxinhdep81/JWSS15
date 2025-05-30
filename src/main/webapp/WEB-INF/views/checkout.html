@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thanh toán đơn hàng</title>
+</head>
+<body>
+<h1>Thanh toán đơn hàng</h1>
+
+<h2>Danh sách sản phẩm</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>Tên sản phẩm</th>
+    <th>Số lượng</th>
+    <th>Thành tiền</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${cartItems}">
+    <td th:text="${item.productName}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td th:text="${#numbers.formatDecimal(item.productPrice * item.quantity, 1, 'COMMA', 2, 'POINT')} + ' $'"></td>
+  </tr>
+  </tbody>
+</table>
+
+<p><strong>Tổng tiền: </strong><span th:text="${total}"></span> $</p>
+
+<h2>Thông tin người nhận</h2>
+<form th:action="@{/cart/checkout(userId=${userId})}" th:object="${order}" method="post">
+  <label>Tên người nhận:</label>
+  <input type="text" th:field="*{recipientName}" required/><br/>
+
+  <label>Địa chỉ:</label>
+  <textarea th:field="*{address}" required></textarea><br/>
+
+  <label>Số điện thoại:</label>
+  <input type="text" th:field="*{phoneNumber}"><br/>
+
+  <button type="submit">Đặt hàng</button>
+</form>
+</body>
+</html>

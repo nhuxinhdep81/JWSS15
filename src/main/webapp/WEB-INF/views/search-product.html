@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+    <div>
+        <h1>Search Products</h1>
+
+        <!-- Form tìm kiếm -->
+        <form th:action="@{/search-product}" th:object="${searchQuery}" method="post">
+            <div class="mb-3">
+                <label for="searchQuery" class="form-label">Search by Name or ID</label>
+                <input type="text" class="form-control" id="searchQuery" th:field="*{searchQuery}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('searchQuery')}" th:errors="*{searchQuery}" style="color: red"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+
+        <!-- Hiển thị kết quả -->
+        <div class="mt-4">
+            <h3>Search Results</h3>
+            <table border="1" class="table table-bordered" th:if="${not #lists.isEmpty(products)}">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Thông báo nếu không tìm thấy sản phẩm -->
+            <div th:if="${#lists.isEmpty(products)}" class="alert alert-warning">
+                Không tìm thấy sản phẩm phù hợp.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

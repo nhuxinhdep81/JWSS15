@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách sinh viên</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      background: #f8f9fa;
+    }
+
+    th {
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #e9ecef;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e9ecef;
+      color: #495057;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fdfdfd;
+    }
+
+    .id-column {
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    .email-column {
+      color: #28a745;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        border-radius: 8px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 8px 6px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📚 Danh sách sinh viên</h1>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Mã SV</th>
+      <th>Tên</th>
+      <th>Tuổi</th>
+      <th>Lớp</th>
+      <th>Email</th>
+      <th>Địa chỉ</th>
+      <th>Số điện thoại</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="stu : ${studentList}">
+      <td class="id-column" th:text="${stu.id}"></td>
+      <td th:text="${stu.name}"></td>
+      <td th:text="${stu.age}"></td>
+      <td th:text="${stu.className}"></td>
+      <td class="email-column" th:text="${stu.email}"></td>
+      <td th:text="${stu.address}"></td>
+      <td th:text="${stu.phone}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

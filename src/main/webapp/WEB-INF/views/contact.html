@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:replace="~{layout :: layout(title='Contact Page', content=~{::content}, activePage='contact')}">
+    <div th:fragment="content">
+        <h1>Contact Us</h1>
+        <p>This is the contact page content.</p>
+    </div>
+</div>
+</body>
+</html>

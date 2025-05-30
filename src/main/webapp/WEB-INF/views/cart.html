@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Giỏ hàng</title>
+  <meta charset="UTF-8" />
+</head>
+<body>
+<h2>Giỏ hàng của người dùng: <span th:text="${userId}"></span></h2>
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+  <tr>
+    <th>Tên sản phẩm</th>
+    <th>Giá</th>
+    <th>Số lượng</th>
+    <th>Thành tiền</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="cart : ${carts}">
+    <td th:text="${cart.productName}"></td>
+    <td th:text="${#numbers.formatDecimal(cart.productPrice, 1, 'COMMA', 2, 'POINT')} + ' $'"></td>
+    <td th:text="${cart.quantity}"></td>
+    <td th:text="${#numbers.formatDecimal(cart.productPrice * cart.quantity, 1, 'COMMA', 2, 'POINT')} + ' $'"></td>
+  </tr>
+  </tbody>
+</table>
+<h3>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')} + ' $'"></span></h3>
+
+<!-- Nút xem đơn hàng -->
+<a th:href="@{/cart/orders(userId=${userId})}"
+   style="display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+  Xem danh sách đơn hàng
+</a>
+</body>
+</html>
